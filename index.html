@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>マラソン大会カウントダウン</title>
+    <style>
+      :root {
+        --bg: #f6f1e9;
+        --ink: #1b1b1b;
+        --accent: #0f4c81;
+        --accent-2: #e07a5f;
+        --card: #ffffff;
+        --muted: #6b6b6b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+        color: var(--ink);
+        background: radial-gradient(circle at 20% 20%, #fff7ea 0%, #f3efe7 45%, #efe7da 100%);
+        min-height: 100vh;
+      }
+      header {
+        padding: 48px 24px 24px;
+        text-align: center;
+      }
+      header h1 {
+        margin: 0 0 12px;
+        font-size: clamp(28px, 4vw, 42px);
+        letter-spacing: 0.06em;
+      }
+      header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 20px 48px;
+        display: grid;
+        gap: 18px;
+      }
+      .card {
+        background: var(--card);
+        border-radius: 18px;
+        padding: 20px 24px;
+        box-shadow: 0 12px 30px rgba(15, 76, 129, 0.08);
+        display: grid;
+        gap: 10px;
+        position: relative;
+        overflow: hidden;
+      }
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-left: 6px solid var(--accent);
+        opacity: 0.9;
+        pointer-events: none;
+      }
+      .title {
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .title a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .title a:hover,
+      .title a:focus-visible {
+        text-decoration: underline;
+      }
+      .date {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .countdown {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+      }
+      .countdown .days {
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .countdown .label {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .badge {
+        background: var(--accent-2);
+        color: #fff;
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+      footer {
+        text-align: center;
+        padding: 0 20px 36px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      @media (min-width: 720px) {
+        main {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .card {
+          min-height: 180px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>マラソン大会カウントダウン</h1>
+      <p>各大会までの残り日数を表示します</p>
+    </header>
+    <main id="cards"></main>
+    <footer>最終更新: <span id="today"></span></footer>
+
+    <script>
+      const events = [
+        {
+          name: "第39回 海の中道はるかぜマラソン",
+          url: "https://fmfukuoka.co.jp/lp/harukaze39/",
+          date: "2026-03-07",
+          dayLabel: "土",
+        },
+        {
+          name: "さが桜マラソン2026",
+          url: "https://sagasakura-marathon.jp",
+          date: "2026-03-22",
+          dayLabel: "日",
+        },
+        {
+          name: "行橋-別府 100キロウォーク",
+          url: "https://yb100.jp",
+          date: "2026-10-11",
+          dayLabel: "土",
+        },
+        {
+          name: "福岡マラソン2026",
+          url:"https://www.f-marathon.jp/app/福岡マラソン２０２６開催日決定のお知らせ/",
+          date: "2026-11-08",
+          dayLabel: "日",
+        },
+      ];
+
+      const formatDate = (dateStr, dayLabel) => {
+        const [year, month, day] = dateStr.split("-").map(Number);
+        return `${year}年${month}月${day}日(${dayLabel})`;
+      };
+
+      const daysUntil = (dateStr) => {
+        const now = new Date();
+        const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const [year, month, day] = dateStr.split("-").map(Number);
+        const eventDate = new Date(year, month - 1, day);
+        const diffMs = eventDate - startOfToday;
+        return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+      };
+
+      const cards = document.getElementById("cards");
+      events.forEach((event) => {
+        const remaining = daysUntil(event.date);
+        const card = document.createElement("section");
+        card.className = "card";
+        const status = remaining >= 0 ? `あと ${remaining} 日` : "終了";
+        const badge = remaining <= 30 && remaining >= 0 ? "30日以内" : "";
+        const title = event.url
+          ? `<a href="${event.url}" target="_blank" rel="noopener noreferrer">${event.name}</a>`
+          : event.name;
+
+        card.innerHTML = `
+          <div class="title">${title}</div>
+          <div class="date">${formatDate(event.date, event.dayLabel)}</div>
+          <div class="countdown">
+            <div class="days">${status}</div>
+            <div class="label">開催まで</div>
+          </div>
+          ${badge ? `<span class="badge">${badge}</span>` : ""}
+        `;
+        cards.appendChild(card);
+      });
+
+      const today = new Date();
+      document.getElementById("today").textContent = today.toLocaleDateString("ja-JP", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    </script>
+  </body>
+</html>
