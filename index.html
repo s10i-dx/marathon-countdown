@@ -32,6 +32,9 @@
         font-size: clamp(28px, 4vw, 42px);
         letter-spacing: 0.06em;
       }
+      .title-line {
+        display: block;
+      }
       header p {
         margin: 0;
         color: var(--muted);
@@ -120,16 +123,22 @@
   </head>
   <body>
     <header>
-      <h1>マラソン大会カウントダウン</h1>
+      <h1>
+        <span class="title-line">マラソン大会</span>
+        <span class="title-line">カウントダウン</span>
+      </h1>
       <p>各大会までの残り日数を表示します</p>
     </header>
     <main id="cards"></main>
-    <footer>最終更新: <span id="today"></span></footer>
+    <footer>
+      最終更新: <span id="today"></span><br />
+      &copy; hakatablog.net
+    </footer>
 
     <script>
       const events = [
         {
-          name: "第39回 海の中道はるかぜマラソン",
+          name: "海の中道はるかぜマラソン",
           url: "https://fmfukuoka.co.jp/lp/harukaze39/",
           date: "2026-03-07",
           dayLabel: "土",
