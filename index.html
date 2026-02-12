@@ -40,6 +40,19 @@
         position: relative;
         border: 2px solid var(--border);
       }
+      .counter {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(10, 15, 35, 0.85);
+        border: 1px solid var(--border);
+        padding: 6px 8px;
+        font-size: 10px;
+      }
+      .counter img {
+        display: block;
+        height: 18px;
+      }
       header {
         padding: 12px 8px 10px;
         text-align: left;
@@ -69,6 +82,7 @@
         margin: 0 0 6px;
         font-size: clamp(24px, 3.5vw, 36px);
         letter-spacing: 0.02em;
+        line-height: 1.25;
       }
       .title-line {
         display: inline;
@@ -172,6 +186,9 @@
         }
       }
       @media (max-width: 430px) {
+        header h1 {
+          line-height: 1.0;
+        }
         .title-line {
           display: block;
         }
@@ -186,6 +203,12 @@
   </head>
   <body>
     <div class="page">
+      <div class="counter">
+        <img
+          src="http://accnt.lucky-moji-3677.chips.jp/cnt/accnt.php?cnt_id=2143219&ac_id=LAA1128060&mode=total"
+          alt="アクセスカウンター"
+        />
+      </div>
       <header>
         <div class="logo-slot">
           <img src="iconRocket@4x.png" alt="ロケットロゴ" />
@@ -202,11 +225,7 @@
       <main id="cards"></main>
       <footer>
         最終更新: <span id="today"></span><br />
-        &copy; hakatablog.net<br />
-        <img
-          src="http://accnt.lucky-moji-3677.chips.jp/cnt/accnt.php?cnt_id=2143219&ac_id=LAA1128060&mode=total"
-          alt="アクセスカウンター"
-        />
+        &copy; hakatablog.net
       </footer>
     </div>
 
