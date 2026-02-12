@@ -6,41 +6,64 @@
     <title>マラソン大会カウントダウン</title>
     <style>
       :root {
-        --bg: #c0c0c0;
-        --ink: #111111;
-        --accent: #0000ee;
-        --accent-2: #ff6600;
-        --card: #ffffff;
-        --muted: #333333;
-        --border: #000000;
-        --panel: #f4f4f4;
+        --bg: #0a0f2b;
+        --ink: #e8edff;
+        --accent: #7ad7ff;
+        --accent-2: #ffb347;
+        --card: #121a3a;
+        --muted: #b7c2e6;
+        --border: #2a3a6a;
+        --panel: #101733;
+        --glow: rgba(122, 215, 255, 0.35);
       }
       * {
         box-sizing: border-box;
       }
       body {
         margin: 0;
-        font-family: "MS PGothic", "MS Gothic", "Osaka", "Yu Gothic", sans-serif;
+        font-family: "Trebuchet MS", "Verdana", "Yu Gothic", sans-serif;
         color: var(--ink);
-        background: var(--bg);
+        background:
+          radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.08), transparent 40%),
+          radial-gradient(circle at 80% 30%, rgba(122, 215, 255, 0.12), transparent 45%),
+          radial-gradient(circle at 30% 80%, rgba(255, 180, 120, 0.08), transparent 45%),
+          linear-gradient(180deg, #070b1f 0%, #0a1230 60%, #0b1638 100%);
         min-height: 100vh;
       }
       .page {
         max-width: 960px;
         margin: 24px auto 32px;
-        background: var(--card);
+        background: linear-gradient(180deg, rgba(18, 26, 58, 0.95), rgba(12, 18, 44, 0.98));
         border-radius: 0;
         padding: 16px 16px 20px;
-        box-shadow: none;
+        box-shadow: 0 20px 45px rgba(4, 6, 16, 0.6);
         position: relative;
         border: 2px solid var(--border);
       }
       header {
         padding: 12px 8px 10px;
-        text-align: center;
+        text-align: left;
         border-bottom: 2px solid var(--border);
         margin-bottom: 12px;
-        background: #dde7ff;
+        background: linear-gradient(90deg, rgba(16, 25, 64, 0.9), rgba(10, 16, 43, 0.4));
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .logo-slot {
+        width: 64px;
+        height: 64px;
+        display: grid;
+        place-items: center;
+      }
+      .logo-slot img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 0 8px rgba(255, 179, 71, 0.35));
+      }
+      .header-text {
+        flex: 1;
       }
       header h1 {
         margin: 0 0 6px;
@@ -48,7 +71,13 @@
         letter-spacing: 0.02em;
       }
       .title-line {
-        display: block;
+        display: inline;
+      }
+      .title-line + .title-line::before {
+        content: " ";
+      }
+      .title-break {
+        display: none;
       }
       header p {
         margin: 0;
@@ -62,10 +91,10 @@
         gap: 10px;
       }
       .card {
-        background: var(--panel);
+        background: linear-gradient(180deg, rgba(16, 23, 51, 0.95), rgba(10, 15, 35, 0.95));
         border-radius: 0;
         padding: 12px 12px;
-        box-shadow: none;
+        box-shadow: inset 0 0 0 1px rgba(122, 215, 255, 0.1);
         display: grid;
         gap: 10px;
         position: relative;
@@ -90,7 +119,7 @@
         text-underline-offset: 2px;
       }
       .title a:visited {
-        color: #551a8b;
+        color: #b48cff;
       }
       .title a:hover,
       .title a:focus-visible {
@@ -108,22 +137,23 @@
       .countdown .days {
         font-size: 26px;
         font-weight: 700;
-        color: var(--ink);
-        font-family: "MS PGothic", "MS Gothic", "Osaka", monospace;
+        color: #ffffff;
+        font-family: "Trebuchet MS", "Verdana", monospace;
+        text-shadow: 0 0 10px var(--glow);
       }
       .countdown .label {
         font-size: 12px;
         color: var(--muted);
       }
       .badge {
-        background: #fff4e6;
-        color: #a43f00;
+        background: rgba(255, 179, 71, 0.15);
+        color: #ffd089;
         display: inline-block;
         padding: 4px 10px;
         border-radius: 0;
         font-size: 12px;
         letter-spacing: 0.04em;
-        border: 1px solid #a43f00;
+        border: 1px solid rgba(255, 179, 71, 0.6);
       }
       footer {
         text-align: center;
@@ -135,10 +165,21 @@
       }
       @media (min-width: 720px) {
         main {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-columns: 1fr;
         }
         .card {
           min-height: 180px;
+        }
+      }
+      @media (max-width: 430px) {
+        .title-line {
+          display: block;
+        }
+        .title-line + .title-line::before {
+          content: "";
+        }
+        .title-break {
+          display: block;
         }
       }
     </style>
@@ -146,11 +187,17 @@
   <body>
     <div class="page">
       <header>
-        <h1>
-          <span class="title-line">マラソン大会</span>
-          <span class="title-line">カウントダウン</span>
-        </h1>
-        <p>各大会までの残り日数を表示します</p>
+        <div class="logo-slot">
+          <img src="iconRocket@4x.png" alt="ロケットロゴ" />
+        </div>
+        <div class="header-text">
+          <h1>
+            <span class="title-line">マラソン大会</span>
+            <br class="title-break" />
+            <span class="title-line">カウントダウン</span>
+          </h1>
+          <p>各大会までの残り日数を表示します</p>
+        </div>
       </header>
       <main id="cards"></main>
       <footer>
@@ -178,6 +225,12 @@
           dayLabel: "日",
         },
         {
+          name: "みずほPayPayドームリレーマラソン",
+          url: "https://relaymarathon.jp",
+          date: "2026-05-16",
+          dayLabel: "土",
+        },
+        {
           name: "行橋-別府 100キロウォーク",
           url: "https://yb100.jp",
           date: "2026-10-11",
@@ -185,7 +238,7 @@
         },
         {
           name: "福岡マラソン2026",
-          url:"https://www.f-marathon.jp/app/福岡マラソン２０２６開催日決定のお知らせ/",
+          url: "https://www.f-marathon.jp",
           date: "2026-11-08",
           dayLabel: "日",
         },
