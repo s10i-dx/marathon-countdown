@@ -151,9 +151,14 @@
       .countdown .days {
         font-size: 26px;
         font-weight: 700;
-        color: #ffffff;
+        color: #ff8a1f;
         font-family: "Trebuchet MS", "Verdana", monospace;
         text-shadow: 0 0 10px var(--glow);
+      }
+      .countdown .prefix,
+      .countdown .suffix {
+        color: #ffffff;
+        text-shadow: none;
       }
       .countdown .label {
         font-size: 12px;
@@ -282,7 +287,10 @@
         const remaining = daysUntil(event.date);
         const card = document.createElement("section");
         card.className = "card";
-        const status = remaining >= 0 ? `あと ${remaining} 日` : "終了";
+        const status =
+          remaining >= 0
+            ? `<span class="prefix">あと</span> <span class="number">${remaining}</span> <span class="suffix">日</span>`
+            : "終了";
         const badge = remaining <= 30 && remaining >= 0 ? "30日以内" : "";
         const title = event.url
           ? `<a href="${event.url}" target="_blank" rel="noopener noreferrer">${event.name}</a>`
