@@ -174,6 +174,31 @@
         letter-spacing: 0.04em;
         border: 1px solid rgba(255, 179, 71, 0.6);
       }
+      .results {
+        border: 1px solid var(--border);
+        background: rgba(7, 11, 31, 0.5);
+        padding: 8px 10px;
+      }
+      .results summary {
+        cursor: pointer;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .results summary::marker {
+        color: var(--accent-2);
+      }
+      .results-body {
+        margin-top: 8px;
+        display: grid;
+        gap: 4px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .results-name {
+        color: var(--ink);
+        font-weight: 700;
+      }
       footer {
         text-align: center;
         padding: 10px 8px 0;
@@ -241,6 +266,10 @@
           url: "https://fmfukuoka.co.jp/lp/harukaze39/",
           date: "2026-03-07",
           dayLabel: "土",
+          result: {
+            name: "K.N",
+            record: "10km男子:55分09秒",
+          },
         },
         {
           name: "さが桜マラソン2026",
@@ -295,6 +324,17 @@
         const title = event.url
           ? `<a href="${event.url}" target="_blank" rel="noopener noreferrer">${event.name}</a>`
           : event.name;
+        const resultSection = event.result
+          ? `
+          <details class="results">
+            <summary>ランニング結果</summary>
+            <div class="results-body">
+              <div class="results-name">${event.result.name}（イニシャル）</div>
+              <div>${event.result.record}</div>
+            </div>
+          </details>
+        `
+          : "";
 
         card.innerHTML = `
           <div class="title">${title}</div>
@@ -304,6 +344,7 @@
             <div class="label">開催まで</div>
           </div>
           ${badge ? `<span class="badge">${badge}</span>` : ""}
+          ${resultSection}
         `;
         cards.appendChild(card);
       });
